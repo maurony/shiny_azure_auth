@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+      "containerGroups_ai_trainer_name": {
+          "defaultValue": "aitrainer",
+          "type": "String"
+      },
+      "tenant_id": {
+        "defaultValue": "your tenant id (directory id)",
+        "type": "String"
+      },
+      "app_id": {
+          "defaultValue": "your tenant id (directory id)",
+          "type": "String"
+      }
+  },
+  "variables": {},
+  "resources": [
+      {
+          "type": "Microsoft.ContainerInstance/containerGroups",
+          "name": "[parameters('containerGroups_ai_trainer_name')]",
+          "apiVersion": "2018-04-01",
+          "location": "westeurope",
+          "scale": null,
+          "properties": {
+              "containers": [
+                  {
+                      "name": "[parameters('containerGroups_ai_trainer_name')]",
+                      "properties": {
+                          "image": "maurony/azure_auth_test",
+                          "command": [],
+                          "ports": [
+                              {
+                                  "protocol": "TCP",
+                                  "port": 3838
+                              }
+                          ],
+                          "environmentVariables": [
+                            {
+                                "name": "TENANT_ID",
+                                "value": "[parameters('tenant_id')"
+                              },
+                              {
+                                "name": "APP_ID",
+                                "value": "[parameters('app_id')"
+                              }
+                          ],
+                          "resources": {
+                              "requests": {
+                                  "memoryInGB": 4,
+                                  "cpu": 2
+                              }
+                          }
+                      }
+                  }
+              ],
+              "restartPolicy": "Always",
+              "ipAddress": {
+                  "ports": [
+                      {
+                          "protocol": "TCP",
+                          "port": 3838
+                      }
+                  ],
+                  "type": "Public",
+                  "dnsNameLabel": "[parameters('containerGroups_ai_trainer_name')]"
+              },
+              "osType": "Linux"
+          },
+          "dependsOn": []
+      }
+  ]
+}
