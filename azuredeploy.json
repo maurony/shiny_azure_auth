@@ -28,7 +28,7 @@
                   {
                       "name": "[parameters('containerGroups_ai_trainer_name')]",
                       "properties": {
-                          "image": "maurony/azure_auth_test",
+                          "image": "maurony/shiny_azure_auth",
                           "command": [],
                           "ports": [
                               {
